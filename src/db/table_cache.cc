@@ -52,6 +52,7 @@ TableCache::TableCache(const std::string& dbname,
 }
 
 TableCache::~TableCache() {
+  std::lock_guard<std::shared_mutex> _lock(_tc_lock);
   for (std::map<uint64_t, FileMetaData*>::iterator it = file_metadata_map.begin(); it != file_metadata_map.end(); ++it) {
 	  FileMetaData* f = (*it).second;
 	  if (f != NULL) {

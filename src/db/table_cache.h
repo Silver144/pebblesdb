@@ -58,6 +58,7 @@ class TableCache {
   void SetFileMetaDataMap(uint64_t file_number, uint64_t file_size, InternalKey smallest, InternalKey largest);
 
   FileMetaData* GetFileMetaDataForFile(uint64_t file_number) {
+    std::shared_lock<std::shared_mutex> _lock(_tc_lock);
 	  if (file_metadata_map.count(file_number) > 0) {
 		  return file_metadata_map[file_number];
 	  }
@@ -65,8 +66,8 @@ class TableCache {
   }
 
   void RemoveFileMetaDataMapForFile(uint64_t number) {
+    std::lock_guard<std::shared_mutex> _lock(_tc_lock);
 	  if (file_metadata_map.count(number) > 0) {
-      std::lock_guard<std::shared_mutex> _lock(_tc_lock);
 		  FileMetaData* f = file_metadata_map[number];
 		  if (f != NULL) {
 			  delete f;

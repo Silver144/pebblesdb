@@ -2126,6 +2126,7 @@ VersionSet::~VersionSet() {
 #endif
 
 #ifdef FILE_LEVEL_FILTER
+  std::shared_lock<std::shared_mutex> _lock(_bf_lock);
   for (std::map<uint64_t, std::string*>::iterator it = file_level_bloom_filter.begin(); it != file_level_bloom_filter.end(); ++it) {
 	  std::string* filter_string = (*it).second;
 	  if (filter_string != NULL) {
@@ -2193,6 +2194,7 @@ void VersionSet::PopulateBloomFilterForFile(FileMetaData* file, FileLevelFilterB
 	uint64_t file_size = file->file_size;
 	int cnt = 0;
 
+  std::shared_lock<std::shared_mutex> _lock(_bf_lock);
 	if (file_level_bloom_filter[file_number] != NULL) {
 		// This means that we have already calculated the bloom filter for this file and files are immutable (wrt a file number)
 		return;
@@ -2236,6 +2238,7 @@ void VersionSet::InitializeTableCacheFileMetaData() {
 
 void VersionSet::AddFileLevelBloomFilterInfo(uint64_t file_number, std::string* filter_string) {
 #ifdef FILE_LEVEL_FILTER
+  std::lock_guard<std::shared_mutex> _lock(_bf_lock);
 	file_level_bloom_filter[file_number] = filter_string;
 #endif
 }
