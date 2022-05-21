@@ -94,7 +94,7 @@ static int FLAGS_num = 1000000;
 static int FLAGS_reads = -1;
 
 // Number of concurrent threads to run.
-static int FLAGS_threads = 1;
+static int FLAGS_threads = 4;
 
 // Number of concurrent write threads to run.
 static int FLAGS_write_threads = 1;

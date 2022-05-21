@@ -24,6 +24,9 @@
 #include "util/timer.h"
 #include "db/murmurhash3.h"
 #include <inttypes.h>
+#include <mutex>
+
+std::mutex _bf_lock;
 
 #ifdef TIMER_LOG_SEEK
 	#define vvstart_timer(s) vset->timer->StartTimer(s)
@@ -2237,6 +2240,7 @@ void VersionSet::AddFileLevelBloomFilterInfo(uint64_t file_number, std::string* 
 }
 void VersionSet::RemoveFileLevelBloomFilterInfo(uint64_t file_number) {
 #ifdef FILE_LEVEL_FILTER
+  std::lock_guard<std::mutex> _lock(_bf_lock);
 	std::string* filter = file_level_bloom_filter[file_number];
 	if (filter != NULL) {
 		delete filter;
