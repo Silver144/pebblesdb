@@ -16,7 +16,10 @@
 #include "port/port.h"
 #include "util/timer.h"
 #include "db/version_set.h"
+#include <mutex>
 //#include <unordered_map>
+
+std::mutex _tc_lock;
 
 namespace leveldb {
 
@@ -63,6 +66,7 @@ class TableCache {
 
   void RemoveFileMetaDataMapForFile(uint64_t number) {
 	  if (file_metadata_map.count(number) > 0) {
+      std::lock_guard<std::mutex> _lock(_tc_lock);
 		  FileMetaData* f = file_metadata_map[number];
 		  if (f != NULL) {
 			  delete f;
