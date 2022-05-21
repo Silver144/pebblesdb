@@ -170,6 +170,7 @@ Status TableCache::Get(const ReadOptions& options,
     Table* t = reinterpret_cast<TableAndFile*>(cache_->Value(handle))->table;
 //    printf("Doing an InternalGet for key from Table.\n");
 //    printf("Calling table->InternalGet. \n");
+    std::lock_guard<std::mutex> _lock(_tc_lock);
     s = t->InternalGet(options, k, arg, saver, timer);
 //    printf("Releasing cache->handle.\n");
     cache_->Release(handle);
