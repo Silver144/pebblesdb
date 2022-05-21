@@ -24,9 +24,9 @@
 #include "util/timer.h"
 #include "db/murmurhash3.h"
 #include <inttypes.h>
-#include <mutex>
+#include <shared_mutex>
 
-std::mutex _bf_lock;
+std::shared_mutex _bf_lock;
 
 #ifdef TIMER_LOG_SEEK
 	#define vvstart_timer(s) vset->timer->StartTimer(s)
@@ -966,7 +966,7 @@ Status Version::Get(const ReadOptions& options,
       bool key_may_match = true;
 
 #ifdef FILE_LEVEL_FILTER
-      std::lock_guard<std::mutex> _lock(_bf_lock);
+      std::shared_lock<std::shared_mutex> _lock(_bf_lock);
       std::string* filter_string = vset_->file_level_bloom_filter[f->number];
       if (filter_string != NULL) {
 		  vstart_timer(GET_FILE_LEVEL_FILTER_CHECK, BEGIN, 1);
@@ -2241,7 +2241,7 @@ void VersionSet::AddFileLevelBloomFilterInfo(uint64_t file_number, std::string* 
 }
 void VersionSet::RemoveFileLevelBloomFilterInfo(uint64_t file_number) {
 #ifdef FILE_LEVEL_FILTER
-  std::lock_guard<std::mutex> _lock(_bf_lock);
+  std::lock_guard<std::shared_mutex> _lock(_bf_lock);
 	std::string* filter = file_level_bloom_filter[file_number];
 	if (filter != NULL) {
 		delete filter;

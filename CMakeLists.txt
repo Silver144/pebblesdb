@@ -10,7 +10,7 @@ project(PebblesDB VERSION 1.21.0 LANGUAGES C CXX)
 # SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
 # SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -19,7 +19,7 @@ option(PEBBLESDB_INSTALL "Install PebblesDB's header and library" ON)
 option(PEBBLESDB_BUILD_TESTS "Build PeblesDB's unit tests" ON)
 
 # Setup the basic C++ Compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -Wno-variadic-macros")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3 -Wall -Wno-variadic-macros")
 
 message(STATUS "CMAKE_SOURCE_DIR:    " ${CMAKE_SOURCE_DIR})
 
