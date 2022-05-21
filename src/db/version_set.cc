@@ -2245,13 +2245,11 @@ void VersionSet::AddFileLevelBloomFilterInfo(uint64_t file_number, std::string* 
 void VersionSet::RemoveFileLevelBloomFilterInfo(uint64_t file_number) {
 #ifdef FILE_LEVEL_FILTER
   std::lock_guard<std::shared_mutex> _lock(_bf_lock);
-  if (file_level_bloom_filter.find(file_number) != file_level_bloom_filter.end()) {
-	  std::string* filter = file_level_bloom_filter[file_number];
-	  if (filter != NULL) {
-		  delete filter;
-	  }
-	  file_level_bloom_filter.erase(file_number);
-  }
+	std::string* filter = file_level_bloom_filter[file_number];
+	file_level_bloom_filter.erase(file_number);
+	if (filter != NULL) {
+		delete filter;
+	}
 #endif
 }
 
