@@ -966,6 +966,7 @@ Status Version::Get(const ReadOptions& options,
       bool key_may_match = true;
 
 #ifdef FILE_LEVEL_FILTER
+      std::lock_guard<std::mutex> _lock(_bf_lock);
       std::string* filter_string = vset_->file_level_bloom_filter[f->number];
       if (filter_string != NULL) {
 		  vstart_timer(GET_FILE_LEVEL_FILTER_CHECK, BEGIN, 1);
