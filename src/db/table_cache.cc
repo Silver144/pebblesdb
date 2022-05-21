@@ -17,6 +17,8 @@
 	#define record_timer(s1)
 #endif
 
+std::mutex _tc_lock;
+
 namespace leveldb {
 
 struct TableAndFile {

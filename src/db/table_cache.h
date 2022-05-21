@@ -19,7 +19,7 @@
 #include <mutex>
 //#include <unordered_map>
 
-std::mutex _tc_lock;
+extern std::mutex _tc_lock;
 
 namespace leveldb {
 
